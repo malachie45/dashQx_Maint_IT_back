@@ -51,12 +51,12 @@ class EqpuipementController extends Controller
 
         // insertion dans la table des sites
         DB::table('eqpuipements')->insert([
-    'nom_eqpt'   => $request->nom_eqpt,
-    'model'      => $request->model_eqpt,
-    'cod_sit'    => $request->code_sit,
-    'serial_num' => $request->num_seri,
-    // On force la conversion en entier, ou null si c'est vide
-    'id_site'    => is_numeric($request->id_site) ? (int)$request->id_site : null,
+            'nom_eqpt'   => $request->nom_eqpt,
+            'model'      => $request->model_eqpt,
+            'cod_sit'    => $request->code_sit,
+            'serial_num' => $request->num_seri,
+            // On force la conversion en entier, ou null si c'est vide
+            'id_site'    => is_numeric($request->id_site) ? (int)$request->id_site : null,
 ]);
 
         return response()->json(['message' => 'site créé avec succès']);
