@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\entree;
+use App\Models\eqpuipement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EntreeController extends Controller
 {
@@ -14,6 +16,18 @@ class EntreeController extends Controller
     {
         //
     }
+
+    public function getEqpt(){
+
+    // selectionner les equipements
+       
+            $id_eqpt = eqpuipement::select('id', 'nom_eqpt') 
+            ->get();
+
+        return response()->json($id_eqpt);
+
+    }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -28,7 +42,7 @@ class EntreeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // 
     }
 
     /**

@@ -5,13 +5,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\EqpuipementController;
 use App\Http\Controllers\api\apicontroller;
+use App\Http\Controllers\EntreeController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-//irecuperation de site pour les combo sites
+//recuperation de site pour les combo sites
 Route::get('combsite', [EqpuipementController::class, 'getSites']);
+
+//récupération d'équipements pour combo équipement dans entrees
+Route::get('comboeqpt', [EntreeController::class, 'getEqpt']);
 
 //les insertion de data
 Route::post('/insite', [SiteController::class, 'store']);

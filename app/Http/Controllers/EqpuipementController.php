@@ -23,14 +23,14 @@ class EqpuipementController extends Controller
      */
 
     public function getSites()
-{
-    // selectionner les sites
-       // Assurez-vous d'ajouter la clé primaire (souvent 'id')
-            $sites = site::select('id', 'nom_site') 
-            ->get();
+            {
+                // selectionner les sites
+                // Assurez-vous d'ajouter la clé primaire (souvent 'id')
+                        $sites = site::select('id', 'nom_site') 
+                        ->get();
 
-        return response()->json($sites);
-}
+                    return response()->json($sites);
+            }
 
     public function create()
     {
