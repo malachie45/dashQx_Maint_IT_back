@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\entree;
+use App\Models\site;
 use App\Models\eqpuipement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,17 @@ class EntreeController extends Controller
     {
         //
     }
+
+
+    public function getSitesEnt()
+            {
+                // selectionner les sites
+                // Assurez-vous d'ajouter la clé primaire (souvent 'id')
+                        $sites = site::select('id', 'nom_site') 
+                        ->get();
+
+                    return response()->json($sites);
+            }
 
     public function getEqpt(){
 

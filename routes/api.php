@@ -11,8 +11,11 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-//recuperation de site pour les combo sites
+//recuperation de site pour les combo sites dans formulaire eqpt
 Route::get('combsite', [EqpuipementController::class, 'getSites']);
+
+//recuperation de site pour les combo sites dans formulaire Entrées
+Route::get('combsiteentre', [EntreeController::class, 'getSitesEnt']);
 
 //récupération d'équipements pour combo équipement dans entrees
 Route::get('comboeqpt', [EntreeController::class, 'getEqpt']);
