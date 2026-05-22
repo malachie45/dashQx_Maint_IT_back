@@ -53,9 +53,44 @@ class EntreeController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        // 
+{
+    // Vérification image
+    $request->validate([
+        'fichier' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048'
+    ]);
+
+    // Upload image
+    $cheminImage = null;
+
+    if ($request->hasFile('fichier')) {
+
+        // stocke dans storage/app/public/images
+        $cheminImage = $request->file('fichier')->store('images', 'public');
     }
+
+    // insertion dans la table
+    DB::table('entrees')->insert([
+        'model' => $request->model,
+        'date_entree' => $request->dateEntree,
+        'date_deb_trait' => $request->dateDebut,
+        'cod_sit' => $request->codeSite,
+        'serial_num' => $request->numeroSerie,
+        'motif' => $request->motif,
+        'statut' => $request->statut,
+
+        // chemin enregistré en base
+        'image' => $cheminImage,
+
+        'id_site' => is_numeric($request->id_sit)
+            ? (int)$request->id_sit
+            : null,
+
+        'id_eqpt' => is_numeric($request->id_eqpt)
+            ? (int)$request->id_eqpt
+            : null,
+    ]);
+}
+
 
     /**
      * Display the specified resource.
