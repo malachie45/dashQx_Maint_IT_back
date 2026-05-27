@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\technicien;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TechnicienController extends Controller
 {
@@ -28,7 +29,30 @@ class TechnicienController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validation des données saisies
+        $validated = $request->validate([
+            'mat_it' => 'required|string|max:6',
+            'nom_tech' => 'required|string',
+            'Pren_tech' => 'required|string',
+            'cont_it' => 'required|string|max:15',
+            'adress' => 'required|string',
+        ]);
+
+        //Insertion en base de données
+        DB::table('techniciens')->insert([
+            'matri' => $validated['mat_it'],
+            'nom' => $validated['nom_tech'],
+            'pren' => $validated['Pren_tech'],
+            'contact' => $validated['cont_it'],
+            'adress' => $validated['adress'],
+        ]);
+
+         return response()->json([
+
+            'message' => 'Insertion réussie',
+
+        ], 201);
+        
     }
 
     /**

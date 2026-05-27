@@ -6,6 +6,7 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\EqpuipementController;
 use App\Http\Controllers\api\apicontroller;
 use App\Http\Controllers\EntreeController;
+use App\Http\Controllers\TechnicienController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -25,6 +26,8 @@ Route::post('/insite', [SiteController::class, 'store']);
 Route::post('/ineqpt', [EqpuipementController::class, 'store']);
 // Route::middleware('auth:sanctum')->post('/inentrees', [EntreeController::class, 'store']);
 Route::post('/inentrees', [EntreeController::class, 'store']);
+// Route::middleware('auth:sanctum')->post('/inentrees', [EntreeController::class, 'store']);
+Route::post('/intech', [TechnicienController::class, 'store']);
 
 //creation de profil
 Route::post('/register', [apicontroller::class, 'register']);
