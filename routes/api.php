@@ -23,6 +23,8 @@ Route::get('comboeqpt', [EntreeController::class, 'getEqpt']);
 //les insertion de data
 Route::post('/insite', [SiteController::class, 'store']);
 Route::post('/ineqpt', [EqpuipementController::class, 'store']);
+// Route::middleware('auth:sanctum')->post('/inentrees', [EntreeController::class, 'store']);
+Route::post('/inentrees', [EntreeController::class, 'store']);
 
 //creation de profil
 Route::post('/register', [apicontroller::class, 'register']);

@@ -52,11 +52,22 @@ class EntreeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+ public function store(Request $request)
 {
-    // Vérification image
-    $request->validate([
-        'fichier' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048'
+    // Validation complète
+    $validated = $request->validate([
+        'fichier' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
+
+        'model' => 'required|string|max:255',
+        'dateEntree' => 'required|date',
+        'dateDebut' => 'required|date',
+        'codeSite' => 'required|string|max:100',
+        'numeroSerie' => 'required|string|max:255|unique:entrees,serial_num',
+        'motif' => 'required|string',
+        'statut' => 'required|string|max:100',
+
+        'id_site' => 'required|integer',
+        'id_eqpt' => 'required|integer',
     ]);
 
     // Upload image
@@ -64,31 +75,32 @@ class EntreeController extends Controller
 
     if ($request->hasFile('fichier')) {
 
-        // stocke dans storage/app/public/images
-        $cheminImage = $request->file('fichier')->store('images', 'public');
+        $cheminImage = $request
+            ->file('fichier')
+            ->store('images', 'public');
     }
 
-    // insertion dans la table
+    // Insertion
     DB::table('entrees')->insert([
-        'model' => $request->model,
-        'date_entree' => $request->dateEntree,
-        'date_deb_trait' => $request->dateDebut,
-        'cod_sit' => $request->codeSite,
-        'serial_num' => $request->numeroSerie,
-        'motif' => $request->motif,
-        'statut' => $request->statut,
 
-        // chemin enregistré en base
+        'model' => $validated['model'],
+        'date_entree' => $validated['dateEntree'],
+        'date_deb_trait' => $validated['dateDebut'],
+        'cod_sit' => $validated['codeSite'],
+        'serial_num' => $validated['numeroSerie'],
+        'motif' => $validated['motif'],
+        'statut' => $validated['statut'],
+
         'image' => $cheminImage,
 
-        'id_site' => is_numeric($request->id_sit)
-            ? (int)$request->id_sit
-            : null,
-
-        'id_eqpt' => is_numeric($request->id_eqpt)
-            ? (int)$request->id_eqpt
-            : null,
+        'id_site' => $validated['id_site'],
+        'id_eqpt' => $validated['id_eqpt'],
     ]);
+
+    return response()->json([
+        'message' => 'Insertion réussie',
+        'image' => $cheminImage
+    ], 201);
 }
 
 
