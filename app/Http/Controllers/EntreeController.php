@@ -66,7 +66,7 @@ class EntreeController extends Controller
         'motif' => 'required|string',
         'statut' => 'required|string|max:100',
 
-        'id_site' => 'required|integer',
+        'id_sit' => 'required|integer',
         'id_eqpt' => 'required|integer',
     ]);
 

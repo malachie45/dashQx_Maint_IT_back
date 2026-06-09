@@ -35,7 +35,7 @@ class TechnicienController extends Controller
             'nom_tech' => 'required|string',
             'Pren_tech' => 'required|string',
             'cont_it' => 'required|string|max:15',
-            'adress' => 'required|string',
+            'adr_it' => 'required|string',
         ]);
 
         //Insertion en base de données
@@ -44,7 +44,7 @@ class TechnicienController extends Controller
             'nom' => $validated['nom_tech'],
             'pren' => $validated['Pren_tech'],
             'contact' => $validated['cont_it'],
-            'adress' => $validated['adress'],
+            'adress' => $validated['adr_it'],
         ]);
 
          return response()->json([
