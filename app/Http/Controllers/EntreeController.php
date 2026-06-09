@@ -57,8 +57,7 @@ class EntreeController extends Controller
     // Validation complète
     $validated = $request->validate([
         'fichier' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
-
-        'model' => 'required|string|max:255',
+        'modele' => 'required|string|max:255',
         'dateEntree' => 'required|date',
         'dateDebut' => 'required|date',
         'codeSite' => 'required|string|max:100',
@@ -66,11 +65,14 @@ class EntreeController extends Controller
         'motif' => 'required|string',
         'statut' => 'required|string|max:100',
 
+
+
+
         'id_sit' => 'required|integer',
         'id_eqpt' => 'required|integer',
     ]);
 
-    // Upload image
+    // upload image
     $cheminImage = null;
 
     if ($request->hasFile('fichier')) {
@@ -80,26 +82,43 @@ class EntreeController extends Controller
             ->store('images', 'public');
     }
 
-    // Insertion
+
+    // insertion
     DB::table('entrees')->insert([
 
-        'model' => $validated['model'],
+        'model' => $validated['modele'],
+
         'date_entree' => $validated['dateEntree'],
+
         'date_deb_trait' => $validated['dateDebut'],
+
         'cod_sit' => $validated['codeSite'],
+
         'serial_num' => $validated['numeroSerie'],
+
         'motif' => $validated['motif'],
+
         'statut' => $validated['statut'],
 
         'image' => $cheminImage,
 
-        'id_site' => $validated['id_site'],
+        'id_site' => $validated['id_sit'],
+
         'id_eqpt' => $validated['id_eqpt'],
+
+        'created_at' => now(),
+        'updated_at' => now(),
     ]);
 
+
     return response()->json([
+
+        'success' => true,
+
         'message' => 'Insertion réussie',
+
         'image' => $cheminImage
+
     ], 201);
 }
 
