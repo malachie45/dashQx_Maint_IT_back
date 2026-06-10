@@ -137,7 +137,7 @@ public function recherche(Request $request)
 
     if (!$reche) {
         return response()->json([
-            'message' => 'Aucune entrée trouvée'
+            'message' => 'Aucune entrée trouvé'
         ], 404);
     }
 
