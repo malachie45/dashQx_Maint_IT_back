@@ -28,6 +28,8 @@ Route::post('/ineqpt', [EqpuipementController::class, 'store']);
 Route::post('/inentrees', [EntreeController::class, 'store']);
 // Route::middleware('auth:sanctum')->post('/inentrees', [EntreeController::class, 'store']);
 Route::post('/intech', [TechnicienController::class, 'store']);
+//route de recherche des entrées à faire sortir
+Route::get('/recherche-entree', [EntreeController::class, 'recherche']);
 
 //creation de profil
 Route::post('/register', [apicontroller::class, 'register']);
