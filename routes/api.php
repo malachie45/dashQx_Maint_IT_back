@@ -7,6 +7,7 @@ use App\Http\Controllers\EqpuipementController;
 use App\Http\Controllers\api\apicontroller;
 use App\Http\Controllers\EntreeController;
 use App\Http\Controllers\TechnicienController;
+use App\Http\Controllers\SortiController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -20,6 +21,9 @@ Route::get('combsiteentre', [EntreeController::class, 'getSitesEnt']);
 
 //récupération d'équipements pour combo équipement dans entrees
 Route::get('comboeqpt', [EntreeController::class, 'getEqpt']);
+
+//recuperation des sorties par recherche sci ou coe site
+Route::get('/recherche', [SortiController::class, 'rechercher']);
 
 //les insertion de data
 Route::post('/insite', [SiteController::class, 'store']);

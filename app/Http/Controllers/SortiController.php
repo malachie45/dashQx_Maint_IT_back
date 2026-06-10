@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\sorti;
+use App\Models\entree;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class SortiController extends Controller
@@ -14,6 +16,24 @@ class SortiController extends Controller
     {
         //
     }
+
+    public function rechercher(Request $request)
+{
+    $resultat = DB::table('sortis')
+                    ->where('cod_sit', $request->recherch)
+                    ->orWhere('serial_num', $request->recherch)
+                    ->get();
+
+    if ($resultat->isEmpty()) {
+        return response()->json([
+            'message' => 'Equipement inexistant'
+        ], 404);
+    }
+
+    return response()->json([
+        'data' => $resultat
+    ], 200);
+}
 
     /**
      * Show the form for creating a new resource.
