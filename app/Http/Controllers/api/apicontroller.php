@@ -10,7 +10,7 @@ use App\Models\User;
 
 class apicontroller extends Controller
 {
-    // creer un compte register
+    // creer un compte  avec succes
     public function register(Request $request){
 
         // validatio des données envoyés par le front
