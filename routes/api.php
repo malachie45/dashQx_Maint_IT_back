@@ -39,7 +39,7 @@ Route::get('/recherche-entree', [EntreeController::class, 'recherche']);
 Route::post('/register', [apicontroller::class, 'register']);
 
 //connexion par profile
-Route::post('/login', [apicontroller::class, 'login']);
+Route::post('/loginuser', [apicontroller::class, 'login']);
 
 // déconnexion
-Route::middleware('auth:sanctum')->post('/logout', [apicontroller::class, 'logout']);
+Route::middleware('auth:sanctum')->post('/logoutuser', [apicontroller::class, 'logout']);
