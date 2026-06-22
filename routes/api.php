@@ -8,6 +8,7 @@ use App\Http\Controllers\api\apicontroller;
 use App\Http\Controllers\EntreeController;
 use App\Http\Controllers\TechnicienController;
 use App\Http\Controllers\SortiController;
+use App\Http\Controllers\countcontroller;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -42,7 +43,10 @@ Route::post('/register', [apicontroller::class, 'register']);
 Route::post('/loginuser', [apicontroller::class, 'login']);
 
 //statistiques
-Route::get('/statistiques', [DashboardController::class, 'statistiques']);
+Route::get('/statistiques', [countcontroller::class, 'statistiques']);
+
+//statistiques par entrées sorties
+Route::get('/statentresorti', [countcontroller::class, 'statistiquesEquipements']);
 
 // déconnexion
 Route::middleware('auth:sanctum')->post('/logoutuser', [apicontroller::class, 'logout']);

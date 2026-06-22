@@ -33,4 +33,9 @@ class eqpuipement extends Model
         return $this->hasMany(entree::class, 'id_eqpt');
     }
 
+    public function sorti(){
+
+        return $this->hasMany(sorties::class, 'id_eqpt');
+    }
+
 }

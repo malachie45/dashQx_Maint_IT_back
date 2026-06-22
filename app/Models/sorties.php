@@ -20,7 +20,7 @@ class sorties extends Model
      * @var array
      */
     protected $fillable = [
-        'model','sit','eqpt','date_sorti','date_fin_trait','cod_sit','serial_num','observ','statut','image','id_site'
+        'model','sit','eqpt','date_sorti','date_fin_trait','cod_sit','serial_num','observ','statut','image','id_site', 'id_eqpt'
     ];
 
 

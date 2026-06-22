@@ -28,10 +28,12 @@ return new class extends Migration
             $table->integer('id_site')->unsigned()->index()->nullable();
             $table->foreign('id_site')->references('id')->on('sites')->onDelete('cascade');
 
-            /* $table->inetger('id_eqpt')->unsigned()->index()->nullable();
-            $table->foreign('id_eqpt')->references('id')->on('eqpuipements')->onDelete('cascade'); */
-
-            $table->timestamps();
+            $table->integer('id_eqpt')->unsigned()->index()->nullable();
+            $table->foreign('id_eqpt')
+            ->references('id')
+            ->on('eqpuipements')
+            ->onDelete('cascade');
+                    $table->timestamps();
         });
         }
     }
