@@ -104,6 +104,46 @@ class EntreeController extends Controller
 }
 
 
+// rechercher l'équipement à sortir
+
+public function recherche(Request $request)
+{
+    // Validation
+     $validated = $request->validate([
+        'recherch' => 'required|string|max:255',
+    ]); 
+
+    $recherch = $request->recherch;
+
+    // Recherche
+    $reche = DB::table('entrees')
+    ->join('sites', 'entrees.id_site', '=', 'sites.id')
+    ->join('eqpuipements', 'entrees.id_eqpt', '=', 'eqpuipements.id')
+    ->select(
+        'entrees.model',
+        'entrees.date_entree',
+        'entrees.date_deb_trait',
+        'entrees.cod_sit',
+        'entrees.serial_num',
+        'entrees.motif',
+        'eqpuipements.nom_eqpt',
+        'sites.nom_site'
+    )
+    ->where(function ($query) use ($recherch) {
+        $query->where('entrees.cod_sit', $recherch)
+              ->orWhere('entrees.serial_num', $recherch);
+    })
+    ->first();
+
+    if (!$reche) {
+        return response()->json([
+            'message' => 'Aucune entrée trouvé'
+        ], 404);
+    }
+
+    return response()->json($reche);
+}
+
     /**
      * Display the specified resource.
      */

@@ -3,26 +3,27 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class apicontroller extends Controller
 {
-    // creer un compte register
+    // creer un compte  avec succes
     public function register(Request $request){
 
         // validatio des données envoyés par le front
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email|confirmed',
-            'email_confirmation' => 'required|same:email',
-            'password' => 'required|min:6|confirmed',
+            'naame' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+        
         ]);
 
         //création de l'utilisateur dans la base
         $user = User::create([
-            'name' => $request->name,
+            'name' => $request->naame,
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
@@ -33,7 +34,7 @@ class apicontroller extends Controller
         //confirmation de la création du User
         return response()->json([
             'message' => 'Utilisateur créé',
-            'token' => $token,
+            // 'token' => $token,
             'user' => $user
         ], 201);
 
@@ -73,8 +74,8 @@ class apicontroller extends Controller
         
     }
 
-    // se connecter avec ses parametres
-    public function logout (Request $request){
+    // se déconnecter
+    public function logout (Request $request) {
 
         $request->user()->currentAccessToken()->delete();
 
