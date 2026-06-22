@@ -37,7 +37,7 @@ Route::post('/intech', [TechnicienController::class, 'store']);
 Route::post('/register', [apicontroller::class, 'register']);
 
 //connexion par profile
-Route::post('/login', [apicontroller::class, 'login']);
+Route::post('/loginuser', [apicontroller::class, 'login']);
 
 // déconnexion
 Route::middleware('auth:sanctum')->post('/logout', [apicontroller::class, 'logout']);
