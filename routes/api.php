@@ -41,5 +41,8 @@ Route::post('/register', [apicontroller::class, 'register']);
 //connexion par profile
 Route::post('/loginuser', [apicontroller::class, 'login']);
 
+//statistiques
+Route::get('/statistiques', [DashboardController::class, 'statistiques']);
+
 // déconnexion
 Route::middleware('auth:sanctum')->post('/logoutuser', [apicontroller::class, 'logout']);
