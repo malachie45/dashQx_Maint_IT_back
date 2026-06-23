@@ -56,7 +56,7 @@ class EntreeController extends Controller
 {
     // Validation complète
     $validated = $request->validate([
-        'fichier' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
+        'fichier' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
 
         'model' => 'required|string|max:255',
         'dateEntree' => 'required|date',
@@ -93,7 +93,7 @@ class EntreeController extends Controller
 
         'image' => $cheminImage,
 
-        'id_site' => $validated['id_site'],
+        'id_site' => $validated['id_sit'],
         'id_eqpt' => $validated['id_eqpt'],
     ]);
 
