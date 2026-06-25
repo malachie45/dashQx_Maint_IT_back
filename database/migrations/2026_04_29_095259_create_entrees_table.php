@@ -34,6 +34,9 @@ return new class extends Migration
             $table->integer('id_tech')->unsigned()->index()->nullable();
             $table->foreign('id_tech')->references('id')->on('techniciens')->onDelete('cascade');
 
+            $table->integer('id_typtrait')->unsigned()->index()->nullable();
+            $table->foreign('id_typtrait')->references('id')->on('typetraitements')->onDelete('cascade');
+
             $table->timestamps();
         });
         }

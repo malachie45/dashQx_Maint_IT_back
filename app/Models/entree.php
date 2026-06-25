@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\site;
 use App\Models\eqpuipement;
+use App\Models\typetraitement;
+use App\Models\technicien;
 
 class entree extends Model
 {
@@ -20,7 +22,7 @@ class entree extends Model
      * @var array
      */
     protected $fillable = [
-        'model','date_entree','date_deb_trait','cod_sit','serial_num','motif','statut','image','id_site','id_eqpt','id_tech'
+        'model','date_entree','date_deb_trait','cod_sit','serial_num','motif','statut','image','id_site','id_eqpt','id_tech','id_typtrait'
     ];
 
     public function site(){
@@ -36,5 +38,10 @@ class entree extends Model
     public function technicien(){
         
         return $this->belongTo(technicien::class);
+    }
+
+    public function typetraitement(){
+        
+        return $this->belongTo(typetraitement::class);
     }
 }
