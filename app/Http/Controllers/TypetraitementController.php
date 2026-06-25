@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\typetraitement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TypetraitementController extends Controller
 {
@@ -28,7 +29,16 @@ class TypetraitementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Insertion en base de données
+        DB::table('typetraitements')->insert([
+            'typ_trait' => $request->interv
+        ]);
+
+        return response()->json([
+
+            'message' => 'Insertion réussie',
+
+        ], 201);
     }
 
     /**

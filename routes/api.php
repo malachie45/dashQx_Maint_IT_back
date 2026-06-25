@@ -9,6 +9,7 @@ use App\Http\Controllers\EntreeController;
 use App\Http\Controllers\TechnicienController;
 use App\Http\Controllers\SortiController;
 use App\Http\Controllers\countcontroller;
+use App\Http\Controllers\TypetraitementController;
 
 
 
@@ -30,6 +31,9 @@ Route::get('/recherche', [SortiController::class, 'rechercher']);
 
 //recuperation des techniciens
 Route::get('/techno', [TechnicienController::class, 'getTechn']);
+
+//recuperation des TYPES
+Route::get('/typess', [TypetraitementController::class, 'store']);
 
 //les insertion de data
 Route::post('/insite', [SiteController::class, 'store']);
