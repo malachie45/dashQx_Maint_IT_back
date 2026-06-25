@@ -20,7 +20,7 @@ class entree extends Model
      * @var array
      */
     protected $fillable = [
-        'model','date_entree','date_deb_trait','cod_sit','serial_num','motif','statut','image','id_site','id_eqpt'
+        'model','date_entree','date_deb_trait','cod_sit','serial_num','motif','statut','image','id_site','id_eqpt','id_tech'
     ];
 
     public function site(){
@@ -31,5 +31,10 @@ class entree extends Model
     public function equipement(){
         
         return $this->belongTo(eqpuipement::class);
+    }
+
+    public function technicien(){
+        
+        return $this->belongTo(technicien::class);
     }
 }

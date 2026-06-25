@@ -10,6 +10,8 @@ use App\Http\Controllers\TechnicienController;
 use App\Http\Controllers\SortiController;
 use App\Http\Controllers\countcontroller;
 
+
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -25,6 +27,9 @@ Route::get('comboeqpt', [EntreeController::class, 'getEqpt']);
 
 //recuperation des sorties par recherche sci ou coe site
 Route::get('/recherche', [SortiController::class, 'rechercher']);
+
+//recuperation des techniciens
+Route::get('/techno', [TechnicienController::class, 'getTechn']);
 
 //les insertion de data
 Route::post('/insite', [SiteController::class, 'store']);

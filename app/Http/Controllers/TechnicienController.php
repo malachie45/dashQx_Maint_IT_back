@@ -63,6 +63,19 @@ class TechnicienController extends Controller
         //
     }
 
+
+     public function getTechn()
+            {
+                // selectionner les sites
+                // Assurez-vous d'ajouter la clé primaire (souvent 'id')
+                        $tech = technicien::select('id', 'nom', 'pren') 
+                        ->get();
+
+                    return response()->json($tech);
+            }
+
+    
+
     /**
      * Show the form for editing the specified resource.
      */
