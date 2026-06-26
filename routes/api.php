@@ -33,7 +33,7 @@ Route::get('/recherche', [SortiController::class, 'rechercher']);
 Route::get('/techno', [TechnicienController::class, 'getTechn']);
 
 //recuperation des TYPES
-Route::get('/typess', [TypetraitementController::class, 'store']);
+Route::get('/typinterv', [TypetraitementController::class, 'store']);
 
 //les insertion de data
 Route::post('/insite', [SiteController::class, 'store']);
