@@ -32,16 +32,26 @@ Route::get('/recherche', [SortiController::class, 'rechercher']);
 //recuperation des techniciens
 Route::get('/techno', [TechnicienController::class, 'getTechn']);
 
-//recuperation des TYPES
-Route::get('/typinterv', [TypetraitementController::class, 'store']);
+//recuperation des TYPES de maintenance dns entrees
+Route::get('/typinterv', [TypetraitementController::class, 'getTypinterv']);
 
 //les insertion de data
 Route::post('/insite', [SiteController::class, 'store']);
+
+
+//les insertion des types maintenance
+Route::post('/intypmaint', [TypetraitementController::class, 'store']);
+
+
+//insert equipement
 Route::post('/ineqpt', [EqpuipementController::class, 'store']);
+
 // Route::middleware('auth:sanctum')->post('/inentrees', [EntreeController::class, 'store']);
 Route::post('/inentrees', [EntreeController::class, 'store']);
+
 // Route::middleware('auth:sanctum')->post('/inentrees', [EntreeController::class, 'store']);
 Route::post('/intech', [TechnicienController::class, 'store']);
+
 //route de recherche des entrées à faire sortir
 Route::get('/recherche-entree', [EntreeController::class, 'recherche']);
 

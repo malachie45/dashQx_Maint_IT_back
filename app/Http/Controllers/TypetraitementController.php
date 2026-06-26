@@ -24,14 +24,35 @@ class TypetraitementController extends Controller
         //
     }
 
+
+    public function getTypinterv()
+            {
+                // selectionner les sites
+                // Assurez-vous d'ajouter la clé primaire (souvent 'id')
+                        $typinterv = typetraitement::select('id', 'typ_trait') 
+                        ->get();
+
+                    return response()->json($typinterv);
+            }
+
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+
+        //Validation des données saisies
+        $validated = $request->validate([
+            
+            'typ_trait' => 'required|string|max:150',
+    
+        ]);
+
         //Insertion en base de données
+
         DB::table('typetraitements')->insert([
-            'typ_trait' => $request->interv
+            'typ_trait' => $validated['typ_trait']
         ]);
 
         return response()->json([
