@@ -48,7 +48,60 @@ class SortiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+
+        // Validation complète
+        $validated = $request->validate([
+        'image' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
+
+        'model' => 'required|string|max:255',
+        'eqpt' => 'required|string|max:255',
+        'traitement' => 'required|string|max:255',
+        ////'dateEntree' => 'required|date',
+        'dateDebut' => 'required|date',
+        'datesorti' => 'required|date',
+        'codeSite' => 'required|string|max:100',
+        'numeroSerie' => 'required|string|max:255|unique:sortis,serial_num',
+        'motifentre' => 'required|string',
+        'statut' => 'required|string|max:100',
+        'origine' => 'required|string|max:100',
+    ]);
+
+        // Upload image
+    $cheminImage = null;
+
+    if ($request->hasFile('image')) {
+
+        $cheminImage = $request
+            ->file('image')
+            ->store('images', 'public');
+    }
+
+    // Insertion
+    DB::table('sortis')->insert([
+
+        'model' => $validated['model'],
+        'sit' => $validated['origine'],
+        'eqpt' => $validated['eqpt'],
+        'date_sorti' => $validated['datesorti'],
+        'date_entree' => $validated['dateDebut'],
+        'cod_sit' => $validated['codeSite'],
+        'serial_num' => $validated['numeroSerie'],
+        'observ' => $validated['traitement'],
+        'statut' => $validated['statut'],
+        'motifentree' => $validated['motifentre'],
+        'image' => $cheminImage,
+
+        // 'id_site' => $validated['id_sit'],
+        // 'id_eqpt' => $validated['id_eqpt'],
+    ]);
+
+    return response()->json([
+        'message' => 'Insertion réussie',
+        'image' => $cheminImage
+    ], 201);
+
+
     }
 
     /**

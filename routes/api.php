@@ -42,6 +42,9 @@ Route::post('/insite', [SiteController::class, 'store']);
 //les insertion des types maintenance
 Route::post('/intypmaint', [TypetraitementController::class, 'store']);
 
+//les insertion des sorties équipements
+Route::post('/insortis', [SortiController::class, 'store']);
+
 
 //insert equipement
 Route::post('/ineqpt', [EqpuipementController::class, 'store']);

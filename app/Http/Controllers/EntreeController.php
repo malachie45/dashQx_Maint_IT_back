@@ -33,8 +33,14 @@ class EntreeController extends Controller
 
     // selectionner les equipements
        
-            $id_eqpt = eqpuipement::select('id', 'nom_eqpt') 
-            ->get();
+            $id_eqpt = DB::table('eqpuipements')
+        ->select(
+            DB::raw('MIN(id) as id'),
+            'nom_eqpt'
+        )
+        ->groupBy('nom_eqpt')
+        ->orderBy('nom_eqpt', 'asc')
+        ->get();
 
         return response()->json($id_eqpt);
 

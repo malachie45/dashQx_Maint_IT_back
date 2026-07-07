@@ -17,22 +17,23 @@ return new class extends Migration
             $table->string('model');
             $table->string('sit');
             $table->string('eqpt');
+            $table->string('motifentree');
             $table->date('date_sorti');
-            $table->date('date_fin_trait');
+            $table->date('date_entree');
             $table->string('cod_sit');
             $table->string('serial_num');
             $table->string('observ');
             $table->string('statut');
             $table->string('image')->nullable();
             
-            $table->integer('id_site')->unsigned()->index()->nullable();
-            $table->foreign('id_site')->references('id')->on('sites')->onDelete('cascade');
+            // $table->integer('id_site')->unsigned()->index()->nullable();
+            // $table->foreign('id_site')->references('id')->on('sites')->onDelete('cascade');
 
-            $table->integer('id_eqpt')->unsigned()->index()->nullable();
-            $table->foreign('id_eqpt')
-            ->references('id')
-            ->on('eqpuipements')
-            ->onDelete('cascade');
+            // $table->integer('id_eqpt')->unsigned()->index()->nullable();
+            // $table->foreign('id_eqpt')
+            // ->references('id')
+            // ->on('eqpuipements')
+            // ->onDelete('cascade');
                     $table->timestamps();
         });
         }
