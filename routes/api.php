@@ -46,6 +46,19 @@ Route::post('/intypmaint', [TypetraitementController::class, 'store']);
 Route::post('/insortis', [SortiController::class, 'store']);
 
 
+
+// bilan par statut
+Route::get('/bilanequipements', [countcontroller::class,'bilanStatutEquipement']);
+
+
+//statistiques
+Route::get('/statistiques', [countcontroller::class, 'statistiques']);
+
+//statistiques par entrées sorties
+Route::get('/statentresorti', [countcontroller::class, 'statistiquesEquipements']);
+
+
+
 //insert equipement
 Route::post('/ineqpt', [EqpuipementController::class, 'store']);
 
@@ -64,11 +77,7 @@ Route::post('/register', [apicontroller::class, 'register']);
 //connexion par profile
 Route::post('/loginuser', [apicontroller::class, 'login']);
 
-//statistiques
-Route::get('/statistiques', [countcontroller::class, 'statistiques']);
 
-//statistiques par entrées sorties
-Route::get('/statentresorti', [countcontroller::class, 'statistiquesEquipements']);
 
 // déconnexion
 Route::middleware('auth:sanctum')->post('/logoutuser', [apicontroller::class, 'logout']);

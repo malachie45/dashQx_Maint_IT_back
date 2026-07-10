@@ -132,6 +132,7 @@ public function recherche(Request $request)
         'entrees.cod_sit',
         'entrees.serial_num',
         'entrees.motif',
+        'entrees.id_eqpt',
         'eqpuipements.nom_eqpt',
         'sites.nom_site'
     )
@@ -181,4 +182,85 @@ public function recherche(Request $request)
     {
         //
     }
+
+    // bilan par statut equipements
+
+  public function bilanEquipements(Request $request)
+{
+    $dateDebut = $request->date_debut;
+    $dateFin   = $request->date_fin;
+
+    $bilan = DB::table('eqpuipements as e')
+
+        ->leftJoin('entrees as en', function ($join) use ($dateDebut, $dateFin) {
+
+            $join->on('e.id', '=', 'en.id_eqpt');
+
+            if ($dateDebut) {
+                $join->whereDate('en.date_entree', '>=', $dateDebut);
+            }
+
+            if ($dateFin) {
+                $join->whereDate('en.date_entree', '<=', $dateFin);
+            }
+        })
+
+        ->select(
+
+            'e.id',
+            'e.nom_eqpt',
+
+            DB::raw('COUNT(en.id) as total_entrees'),
+
+            DB::raw("
+                SUM(
+                    CASE
+                        WHEN en.statut='resolu'
+                        THEN 1 ELSE 0
+                    END
+                ) as resolus
+            "),
+
+            DB::raw("
+                SUM(
+                    CASE
+                        WHEN en.statut='en cours'
+                        THEN 1 ELSE 0
+                    END
+                ) as en_cours
+            "),
+
+            DB::raw("
+                SUM(
+                    CASE
+                        WHEN en.statut='irrecuperable'
+                        THEN 1 ELSE 0
+                    END
+                ) as irrecuperables
+            "),
+
+            DB::raw("
+                ROUND(
+                    (
+                        SUM(
+                            CASE
+                                WHEN en.statut='resolu'
+                                THEN 1 ELSE 0
+                            END
+                        ) /
+                        NULLIF(COUNT(en.id),0)
+                    )*100,2
+                ) as taux_resolution
+            ")
+
+        )
+
+        ->groupBy('e.id','e.nom_eqpt')
+
+        ->orderBy('e.nom_eqpt')
+
+        ->get();
+
+    return response()->json($bilan);
+}
 }

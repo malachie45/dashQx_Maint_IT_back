@@ -53,11 +53,10 @@ class SortiController extends Controller
         // Validation complète
         $validated = $request->validate([
         'image' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
-
+        'num_ord' => 'required|integer',
         'model' => 'required|string|max:255',
         'eqpt' => 'required|string|max:255',
         'traitement' => 'required|string|max:255',
-        ////'dateEntree' => 'required|date',
         'dateDebut' => 'required|date',
         'datesorti' => 'required|date',
         'codeSite' => 'required|string|max:100',
@@ -79,7 +78,6 @@ class SortiController extends Controller
 
     // Insertion
     DB::table('sortis')->insert([
-
         'model' => $validated['model'],
         'sit' => $validated['origine'],
         'eqpt' => $validated['eqpt'],
@@ -90,8 +88,8 @@ class SortiController extends Controller
         'observ' => $validated['traitement'],
         'statut' => $validated['statut'],
         'motifentree' => $validated['motifentre'],
+        'id_eqpt' => $validated['num_ord'],
         'image' => $cheminImage,
-
         // 'id_site' => $validated['id_sit'],
         // 'id_eqpt' => $validated['id_eqpt'],
     ]);
