@@ -75,8 +75,8 @@ class countcontroller extends Controller
     }
 
 
-    // ==============================
-    // ENTREES / SORTIES PAR EQUIPEMENT
+    // ============================== GESTION DES AFFICHAGES DU DASBOARD
+    // ENTREES / SORTIES PAR EQUIPEMENT Bilan maintenance par équipement
     // ==============================
 
 public function bilanStatutEquipement(Request $request)
@@ -89,7 +89,7 @@ public function bilanStatutEquipement(Request $request)
         ->select(
             'id_eqpt',
             DB::raw("COUNT(*) AS total"),
-            DB::raw("SUM(CASE WHEN statut = 'en cours' THEN 1 ELSE 0 END) AS en_cours"),
+            DB::raw("SUM(CASE WHEN statut = 'encours' THEN 1 ELSE 0 END) AS en_cours"),
             DB::raw("SUM(CASE WHEN statut = 'rejeté' THEN 1 ELSE 0 END) AS rejetes"),
             
         )

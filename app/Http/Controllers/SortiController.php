@@ -64,20 +64,20 @@ class SortiController extends Controller
         'motifentre' => 'required|string',
         'statut' => 'required|string|max:100',
         'origine' => 'required|string|max:100',
-    ]);
+        ]);
 
         // Upload image
-    $cheminImage = null;
+        $cheminImage = null;
 
-    if ($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
 
-        $cheminImage = $request
-            ->file('image')
-            ->store('images', 'public');
-    }
+            $cheminImage = $request
+                ->file('image')
+                ->store('images', 'public');
+        }
 
-    // Insertion
-    DB::table('sortis')->insert([
+        // Insertion
+        DB::table('sortis')->insert([
         'model' => $validated['model'],
         'sit' => $validated['origine'],
         'eqpt' => $validated['eqpt'],
@@ -92,12 +92,15 @@ class SortiController extends Controller
         'image' => $cheminImage,
         // 'id_site' => $validated['id_sit'],
         // 'id_eqpt' => $validated['id_eqpt'],
-    ]);
+        ]);
 
-    return response()->json([
-        'message' => 'Insertion réussie',
-        'image' => $cheminImage
-    ], 201);
+        return response()->json([
+            'message' => 'Insertion réussie',
+            'image' => $cheminImage
+        ], 201);
+
+        //RECHERCHE DANS TABLE ENTREE L'EQPT SORTI POUR CHANGER LE ENCOURS EN TRAITÉ
+        
 
 
     }
