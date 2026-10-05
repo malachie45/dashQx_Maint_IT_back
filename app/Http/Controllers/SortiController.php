@@ -101,7 +101,19 @@ class SortiController extends Controller
 
         //RECHERCHE DANS TABLE ENTREE L'EQPT SORTI POUR CHANGER LE ENCOURS EN TRAITÉ
         
+        DB::table('entrees as e')
+            ->join('sortis as s', function ($join) {
+                $join->on('e.id_eqpt', '=', 's.id_eqpt')
+                    ->on('e.serial_num', '=', 's.serial_num');
+            })
+            ->where('e.statut', 'encours')
+            ->update([
+                'e.statut' => 'traité'
+            ]);
 
+             return response()->json([
+            'message' => 'Insertion réussie',
+        ], 201);
 
     }
 
