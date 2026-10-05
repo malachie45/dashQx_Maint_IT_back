@@ -106,7 +106,7 @@ class SortiController extends Controller
                 $join->on('e.id_eqpt', '=', 's.id_eqpt')
                     ->on('e.serial_num', '=', 's.serial_num');
             })
-            ->where('e.statut', 'en cours')
+            ->where('e.statut', 'encours')
             ->update([
                 'e.statut' => 'traité'
             ]);
