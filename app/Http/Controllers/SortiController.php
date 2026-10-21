@@ -46,12 +46,9 @@ class SortiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        // dd($request->all());
-
-        // Validation complète
-        $validated = $request->validate([
+   public function store(Request $request)
+{
+    $validated = $request->validate([
         'image' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
         'num_ord' => 'required|integer',
         'model' => 'required|string|max:255',
@@ -64,42 +61,67 @@ class SortiController extends Controller
         'motifentre' => 'required|string',
         'statut' => 'required|string|max:100',
         'origine' => 'required|string|max:100',
-        ]);
+    ]);
 
-        // Upload image
-        $cheminImage = null;
+    // Upload de l'image
+    $cheminImage = $request->file('image')
+        ->store('images', 'public');
 
-        if ($request->hasFile('image')) {
+    // Enregistrement de la sortie et mise à jour de l'entrée
+    $sortie = DB::transaction(function () use ($validated, $cheminImage) {
 
-            $cheminImage = $request
-                ->file('image')
-                ->store('images', 'public');
+        // 1. Rechercher l'entrée correspondante
+        $entree = DB::table('entrees')
+            ->where('serial_num', $validated['numeroSerie'])
+            ->where('cod_sit', $validated['codeSite'])
+            ->whereDate('date_entree', $validated['dateDebut'])
+            ->orderByDesc('id')
+            ->lockForUpdate()
+            ->first();
+
+        if (!$entree) {
+            throw ValidationException::withMessages([
+                'numeroSerie' =>
+                    "Aucune entrée correspondante n'a été trouvée."
+            ]);
         }
 
-        // Insertion
-        DB::table('sortis')->insert([
-        'model' => $validated['model'],
-        'sit' => $validated['origine'],
-        'eqpt' => $validated['eqpt'],
-        'date_sorti' => $validated['datesorti'],
-        'date_entree' => $validated['dateDebut'],
-        'cod_sit' => $validated['codeSite'],
-        'serial_num' => $validated['numeroSerie'],
-        'observ' => $validated['traitement'],
-        'statut' => $validated['statut'],
-        'motifentree' => $validated['motifentre'],
-        'id_eqpt' => $validated['num_ord'],
-        'image' => $cheminImage,
-        // 'id_site' => $validated['id_sit'],
-        // 'id_eqpt' => $validated['id_eqpt'],
+        // 2. Enregistrer la sortie
+        $idSortie = DB::table('sortis')->insertGetId([
+            'model' => $validated['model'],
+            'sit' => $validated['origine'],
+            'eqpt' => $validated['eqpt'],
+            'date_sorti' => $validated['datesorti'],
+            'date_entree' => $validated['dateDebut'],
+            'cod_sit' => $validated['codeSite'],
+            'serial_num' => $validated['numeroSerie'],
+            'observ' => $validated['traitement'],
+            'statut' => $validated['statut'],
+            'motifentree' => $validated['motifentre'],
+            'id_eqpt' => $validated['num_ord'],
+            'image' => $cheminImage,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
-        return response()->json([
-            'message' => 'Insertion réussie',
-            'image' => $cheminImage
-        ], 201);
+        // 3. Actualiser le statut de l'entrée correspondante
+        DB::table('entrees')
+            ->where('id', $entree->id)
+            ->update([
+                'statut' => $validated['statut'],
+                'updated_at' => now(),
+            ]);
 
-    }
+        return $idSortie;
+    });
+
+    return response()->json([
+        'message' => 'Sortie enregistrée et statut de l’entrée actualisé.',
+        'id_sortie' => $sortie,
+        'statut' => $validated['statut'],
+        'image' => $cheminImage,
+    ], 201);
+}
 
     /**
      * Display the specified resource.

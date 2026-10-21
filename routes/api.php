@@ -57,7 +57,8 @@ Route::get('/statistiques', [countcontroller::class, 'statistiques']);
 //statistiques par entrées sorties
 Route::get('/statentresorti', [countcontroller::class, 'statistiquesEquipements']);
 
-
+// nombre d'équipements encours d'intervention pour ALERTE
+Route::get('/alertencours', [countcontroller::class, 'nombreEquipementsEnCours']);
 
 //insert equipement
 Route::post('/ineqpt', [EqpuipementController::class, 'store']);

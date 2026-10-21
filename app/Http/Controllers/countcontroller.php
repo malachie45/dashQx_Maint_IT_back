@@ -266,4 +266,63 @@ public function statistiquesEquipements(Request $request)
     }
 
 
+    //=========================
+        //par type d'intervention
+    //=========================
+ 
+public function nombreEquipementsEnCours(Request $request)
+{
+    $dateDebut = $request->query('dateDebut');
+    $dateFin   = $request->query('dateFin');
+
+    // Entrées regroupées par équipement
+    $entrees = DB::table('entrees')
+        ->select(
+            'id_eqpt',
+            DB::raw('COUNT(*) AS total')
+        )
+        ->when($dateDebut && $dateFin, function ($query) use ($dateDebut, $dateFin) {
+            $query->whereBetween('date_entree', [$dateDebut, $dateFin]);
+        })
+        ->groupBy('id_eqpt');
+
+    // Sorties regroupées par équipement
+    $sorties = DB::table('sortis')
+        ->select(
+            'id_eqpt',
+            DB::raw("SUM(CASE WHEN statut = 'resolu' THEN 1 ELSE 0 END) AS resolus"),
+            DB::raw("SUM(CASE WHEN statut = 'rebut' THEN 1 ELSE 0 END) AS rebuts")
+        )
+        ->when($dateDebut && $dateFin, function ($query) use ($dateDebut, $dateFin) {
+            $query->whereBetween('date_sorti', [$dateDebut, $dateFin]);
+        })
+        ->groupBy('id_eqpt');
+
+    // Somme du même calcul que la colonne « En cours »
+    $resultat = DB::query()
+        ->fromSub($entrees, 'en')
+        ->leftJoinSub($sorties, 's', function ($join) {
+            $join->on('en.id_eqpt', '=', 's.id_eqpt');
+        })
+        ->selectRaw("
+            COALESCE(
+                SUM(
+                    GREATEST(
+                        0,
+                        COALESCE(en.total, 0)
+                        - COALESCE(s.resolus, 0)
+                        - COALESCE(s.rebuts, 0)
+                    )
+                ),
+                0
+            ) AS nombre_en_cours
+        ")
+        ->first();
+
+    return response()->json([
+        'nombre_en_cours' => (int) $resultat->nombre_en_cours
+    ]);
+}
+
+
 }
