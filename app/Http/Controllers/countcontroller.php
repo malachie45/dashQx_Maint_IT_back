@@ -319,9 +319,43 @@ public function nombreEquipementsEnCours(Request $request)
         ")
         ->first();
 
-    return response()->json([
-        'nombre_en_cours' => (int) $resultat->nombre_en_cours
-    ]);
+            // Liste des équipements en cours
+
+        $equipementsEnCours = DB::table('entrees as en')
+                ->leftJoin('techniciens as t', 't.id', '=', 'en.id_tech')
+                ->whereNotExists(function ($query) {
+                    $query->select(DB::raw(1))
+                        ->from('sortis as s')
+                        ->whereColumn('s.cod_sit', 'en.cod_sit')
+                        ->whereColumn('s.serial_num', 'en.serial_num')
+                        ->whereColumn('s.date_entree', 'en.date_entree');
+                })
+                ->when($dateDebut && $dateFin, function ($query) use ($dateDebut, $dateFin) {
+                    $query->whereBetween('en.date_entree', [$dateDebut, $dateFin]);
+                })
+                ->select(
+                    'en.id',
+                    'en.model',
+                    'en.cod_sit',
+                    'en.serial_num',
+                    DB::raw("
+                        TRIM(CONCAT(
+                            COALESCE(t.matri, ''),
+                            ' ',
+                            COALESCE(t.nom, ''),
+                            ' ',
+                            COALESCE(t.pren, '')
+                        )) AS technicien
+                    ")
+                )
+                ->orderBy('en.date_entree', 'desc')
+                ->get();
+
+            // Réponse JSON
+                return response()->json([
+                    'nombre_en_cours' => (int) $resultat->nombre_en_cours,
+                    'equipements_en_cours' => $equipementsEnCours
+                ]);
 }
 
 
