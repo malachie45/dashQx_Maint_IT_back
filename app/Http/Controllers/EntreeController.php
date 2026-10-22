@@ -71,7 +71,8 @@ class EntreeController extends Controller
         'numeroSerie' => 'required|string|max:255|unique:entrees,serial_num',
         'motif' => 'required|string',
         'statut' => 'required|string|max:100',
-
+        'id_techn' => 'required|integer',
+        'id_typinterv' => 'required|integer',
         'id_sit' => 'required|integer',
         'id_eqpt' => 'required|integer',
     ]);
@@ -99,6 +100,9 @@ class EntreeController extends Controller
 
         'image' => $cheminImage,
 
+        'id_typtrait' => $validated['id_typinterv'],
+        'id_tech' => $validated['id_techn'],
+        
         'id_site' => $validated['id_sit'],
         'id_eqpt' => $validated['id_eqpt'],
     ]);
@@ -155,6 +159,11 @@ public function recherche(Request $request)
      * Display the specified resource.
      */
     public function show(entree $entree)
+    {
+        //
+    }
+
+     public function encours()
     {
         //
     }
