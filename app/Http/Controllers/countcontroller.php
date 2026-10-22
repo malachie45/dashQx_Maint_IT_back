@@ -323,6 +323,7 @@ public function nombreEquipementsEnCours(Request $request)
 
         $equipementsEnCours = DB::table('entrees as en')
                 ->leftJoin('techniciens as t', 't.id', '=', 'en.id_tech')
+                ->leftJoin('eqpuipements as eq', 'eq.id', '=', 'en.id_eqpt')
                 ->whereNotExists(function ($query) {
                     $query->select(DB::raw(1))
                         ->from('sortis as s')
@@ -338,6 +339,9 @@ public function nombreEquipementsEnCours(Request $request)
                     'en.model',
                     'en.cod_sit',
                     'en.serial_num',
+                    'en.motif',
+                    'eq.nom_eqpt',
+                    'date_entree',
                     DB::raw("
                         TRIM(CONCAT(
                             COALESCE(t.matri, ''),
